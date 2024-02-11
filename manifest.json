@@ -23,5 +23,14 @@
           },
           "description": "Note down for later"
         }
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'"
+    },
+    "icons": {
+        "16": "logo.png",
+        "32": "logo.png",
+        "48": "logo.png",
+        "128": "logo.png"
     }
 }

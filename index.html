@@ -9,24 +9,91 @@
 
     <style>
         .container {
+          overflow-y: hidden;
+          overflow-x: overlay;
           margin-top: 50px;
         }
         /* Style the textarea to occupy remaining height */
         .custom-textarea {
-          height: calc(100vh - 150px); /* adjust as needed */
+          height: calc(80vh); /* adjust as needed */
+          width: calc(80vw);
         }
         /* Style the button */
         .custom-button {
           margin-top: 10px;
         }
+    .tag-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 5px;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .tag.red {
+        display: none;
+        background-color: #ff3333;
+        color: #ffffff;
+    }
+
+    .tag.blue {
+        display: none;
+        background-color: #3399ff;
+        color: #ffffff;
+    }
+
+    .tag.green {
+        display: none;
+        background-color: #33cc33;
+        color: #ffffff;
+    }
+    .tag.gray {
+        display: none;
+        background-color: #808080;
+        color: #ffffff;
+    }
+    .tag.orange {
+        display: none;
+        background-color: #FFA500;
+        color: #ffffff;
+    }
+    .rounded-input {
+      border-radius: 10px; /* Adjust the border-radius as needed */
+      margin-bottom: 10px;
+      width: 80vw;
+    }
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control rounded-input" id="exampleInput" placeholder="Enter your tag name.."><!--onkeydown="updateTag(this)"-->
+        </div>
+        <div id="loadingMessage" style="color: rgba(0, 0, 0, 0.5); display: none;">
+            Generating Tags...
+        </div>
+        <div id="savedMessage" style="color: rgba(0, 177, 64, 0.8); display: none;">
+            Saved successfully..
+        </div>
+        <div class="tag-container">
+            <!-- <div class="row"> -->
+                <span class="tag red" id="red"></span>
+                <span class="tag blue" id="blue"></span>
+                <span class="tag green" id="green"></span>
+                <span class="tag gray" id="gray"></span>
+                <span class="tag orange" id="orange"></span>
+            <!-- </div> -->
             <div class="col-md-12">
             <textarea id="laterText" class="form-control custom-textarea" rows="6"></textarea>
-            <button type="button" class="btn btn-primary custom-button" onclick="saveData()">Save</button>
+            <button type="button" class="btn btn-primary custom-button" id="apiButton">Save</button><!--onclick="saveData()"-->
             </div>
         </div>
     </div>

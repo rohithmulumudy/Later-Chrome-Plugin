@@ -26,3 +26,41 @@ chrome.commands.onCommand.addListener(command => {
     }
 });
 
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // Handle the received content
+    if(message.action == "generateTags") {
+        url = "https://later-ai-backend.onrender.com/getTags"; // edit this line
+        data={"query": message.data};
+        fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }).then(resp => resp.json())
+            .then(tags => {
+                // console.log(tags);
+                tags.sort((a,b) => b.score - a.score)
+                chrome.runtime.sendMessage({tags: tags.map(obj => obj["word"])});
+            });
+    }
+
+    if(message.action == "saveNotes") {
+        url = "https://later-ai-backend.onrender.com/saveNotes"; // edit this line
+        data={"data": message.data, "tags": message.tags};
+        fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }).then(resp => resp.json())
+            .then(resp => {
+                // console.log(tags);
+                // tags.sort((a,b) => b.score - a.score)
+                chrome.runtime.sendMessage({success: true});
+            });
+    }
+});
+    
