@@ -1,0 +1,27 @@
+{
+    "name": "Later.ai",
+    "version": "1.0.0",
+    "description": "Note taking app",
+    "manifest_version": 3,
+    "author": "Rohith Mulumudy",
+    "minimum_chrome_version": "116",
+    "background": {
+        "service_worker": "service-worker.js"
+    },
+    "permissions": ["sidePanel", "contextMenus", "activeTab", "scripting"],
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "js": ["content-script.js"]
+        }
+    ],
+    "commands": {
+        "run_script": {
+          "suggested_key": {
+            "default": "Ctrl+Shift+U",
+            "mac": "Command+Shift+U"
+          },
+          "description": "Note down for later"
+        }
+    }
+}
