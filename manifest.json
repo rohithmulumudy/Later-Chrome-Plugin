@@ -18,8 +18,8 @@
     "commands": {
         "run_script": {
           "suggested_key": {
-            "default": "Ctrl+Shift+U",
-            "mac": "Command+Shift+U"
+            "default": "Ctrl+Shift+L",
+            "mac": "Command+Shift+L"
           },
           "description": "Note down for later"
         }

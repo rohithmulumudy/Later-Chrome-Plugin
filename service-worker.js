@@ -1,3 +1,5 @@
+let searchQuery = "";
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
       id: 'openSidePanel',
@@ -40,9 +42,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 body: JSON.stringify(data),
             }).then(resp => resp.json())
             .then(tags => {
+                if(tags.error) {
+                    chrome.runtime.sendMessage({tags: []});
+                }
                 // console.log(tags);
                 tags.sort((a,b) => b.score - a.score)
-                chrome.runtime.sendMessage({tags: tags.map(obj => obj["word"])});
+                tags = tags.map(obj => obj["word"].trim())
+                let set = new Set(tags);
+                chrome.runtime.sendMessage({tags: Array.from(set)});
             });
     }
 
@@ -61,6 +68,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 // tags.sort((a,b) => b.score - a.score)
                 chrome.runtime.sendMessage({success: true});
             });
+    }
+
+    if(message.searchQuery) {
+        if(!(searchQuery === message.searchQuery)) {
+            chrome.runtime.sendMessage({placeholder: "Retrieving from Later.ai..."});
+            searchQuery = message.searchQuery;
+            // console.log(message.searchQuery);
+            url = "https://later-ai-backend.onrender.com/searchNotes";
+            data={"query": message.searchQuery};
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }).then(resp => resp.json())
+            .then(resp => {
+                // console.log(resp);
+                // console.log(resp?.choices)
+                // console.log(resp?.choices[0])
+                // console.log(resp?.choices[0]?.text)
+                // tags.sort((a,b) => b.score - a.score)
+                chrome.runtime.sendMessage({response: resp?.choices[0]?.text});
+            });
+        }
     }
 });
     

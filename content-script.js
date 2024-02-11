@@ -8,3 +8,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
+setInterval(() => {
+    const searchInput = document.querySelector('input[name="q"]');
+    if (searchInput) {
+    //   console.log(searchInput.value);
+      chrome.runtime.sendMessage({ searchQuery: searchInput.value });
+    }
+}, 1000)
+
+

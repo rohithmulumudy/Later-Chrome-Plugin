@@ -42,7 +42,7 @@ document.getElementById("exampleInput").addEventListener('keydown', (event) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Handle the received content
     if(message.tags) {
-        if(message.tags.length) {
+        if(message.tags.length >=0 ) {
             document.getElementById('loadingMessage').style.display = 'none'
             tags = tags.slice(0, manualTagCount);
             for(let i=0; i<Math.min(5-manualTagCount, message.tags.length); i++){
@@ -57,6 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
         
     if(message.content){
+        document.getElementById("laterText").placeholder = ''
         document.getElementById("laterText").value += message.content
     }
 
@@ -65,5 +66,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         setTimeout(() => {
             document.getElementById('savedMessage').style.display = 'none'
         }, 1000)
+    }
+
+    if(message.placeholder) {
+        document.getElementById("laterText").placeholder = message.placeholder
+    }
+
+    if(message.response) {
+        if(message.response.includes("Sorry, I can't find an")) {
+            document.getElementById("laterText").placeholder = "Sorry, I can't find an entry in later.ai";
+        } else{
+            document.getElementById("laterText").placeholder = message.response.trim()
+        }
     }
 });
